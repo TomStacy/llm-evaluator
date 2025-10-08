@@ -1,0 +1,18 @@
+{
+  "include": [
+    "notebooks",
+    "tests"
+  ],
+  "typeCheckingMode": "off",
+  "reportUnusedImport": false,
+  "reportUnusedVariable": false,
+  "reportGeneralTypeIssues": false,
+  "reportOptionalMemberAccess": false,
+  "reportOptionalSubscript": false,
+  "reportPrivateImportUsage": false,
+  "reportUnknownMemberType": false,
+  "reportUnknownArgumentType": false,
+  "reportUnknownVariableType": false,
+  "reportUnknownLambdaType": false,
+  "pythonVersion": "3.13"
+}

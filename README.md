@@ -63,29 +63,62 @@ Alternatively, open notebooks directly in VS Code with the Jupyter extension.
 
 ## Code Quality
 
-This project uses [Ruff](https://github.com/astral-sh/ruff) for linting and code formatting. Ruff is an extremely fast Python linter and formatter written in Rust.
+This project leverages a dual-tool approach to ensure high code quality and maintainability:
 
-### Running Ruff
+### 🦀 Ruff - Lightning-Fast Linting & Formatting
 
-Check for linting issues:
+[Ruff](https://github.com/astral-sh/ruff) is an extremely fast Python linter and formatter written in Rust, providing:
+
+- **Style Enforcement**: Catches PEP 8 violations, naming conventions, and code smells
+- **Auto-fixing**: Automatically corrects many issues (import sorting, formatting, etc.)
+- **Modern Python**: Enforces best practices and suggests upgrades to modern Python idioms
+- **Comprehensive Rules**: Includes checks from pylint, flake8, isort, pyupgrade, and more
+
+**Running Ruff:**
 
 ```bash
+# Check for linting issues
 uv run ruff check .
-```
 
-Format code:
-
-```bash
+# Format code
 uv run ruff format .
-```
 
-Fix auto-fixable issues:
-
-```bash
+# Fix auto-fixable issues
 uv run ruff check --fix .
 ```
 
-Ruff runs automatically in VS Code if you have the Ruff extension installed, providing real-time feedback on code quality.
+### 🔍 Pyright - Advanced Type Checking
+
+[Pyright](https://github.com/microsoft/pyright) (via Pylance in VS Code) provides static type analysis:
+
+- **Type Safety**: Catches type-related bugs before runtime
+- **IDE Integration**: Powers IntelliSense, auto-completion, and inline documentation
+- **Gradual Typing**: Works with both typed and untyped code
+- **Performance**: Fast analysis even on large codebases
+
+### Notebook-Friendly Configuration
+
+Both tools are configured to work seamlessly with Jupyter notebooks:
+
+- **Relaxed Line Length**: 120 characters (accommodates longer docstrings)
+- **Import Flexibility**: Disabled import sorting for notebooks (cells execute non-linearly)
+- **Type Checking**: Set to "off" for notebooks to prevent false positives with dynamic types
+- **Smart Ignores**: Whitespace and line length rules relaxed for notebook cells
+
+This configuration is defined in:
+
+- `pyproject.toml` - Ruff settings
+- `pyrightconfig.json` - Pyright configuration
+- `.vscode/settings.json` - VS Code workspace settings
+
+**Why Both Tools?**
+
+Ruff and Pyright complement each other:
+
+- **Ruff** focuses on code style, common errors, and best practices
+- **Pyright** focuses on type correctness and provides rich IDE features
+
+Together, they create a comprehensive quality gate that catches issues early while remaining fast and developer-friendly, especially in the mixed environment of scripts and interactive notebooks.
 
 ## Development
 

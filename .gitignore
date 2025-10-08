@@ -51,5 +51,8 @@ Thumbs.db
 htmlcov/
 .tox/
 
+# Linting and formatting
+.ruff_cache/
+
 # uv
 .uv_cache/

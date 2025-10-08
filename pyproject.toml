@@ -10,8 +10,8 @@ dependencies = [
 ]
 
 [tool.ruff]
-# Set the maximum line length to 100 characters
-line-length = 100
+# Set the maximum line length to 120 characters (more lenient for notebooks with docstrings)
+line-length = 120
 
 # Assume Python 3.13
 target-version = "py313"
@@ -34,7 +34,16 @@ select = [
 ]
 
 # Ignore specific rules if needed
-ignore = []
+ignore = [
+    "W293",  # Blank line contains whitespace (common in notebooks)
+]
+
+# Notebook-specific settings
+[tool.ruff.lint.per-file-ignores]
+"*.ipynb" = [
+    "I001",  # Import block is unsorted/unformatted (notebooks have non-linear execution)
+    "E501",  # Line too long (some docstrings are hard to break)
+]
 
 [tool.ruff.format]
 # Use double quotes for strings
