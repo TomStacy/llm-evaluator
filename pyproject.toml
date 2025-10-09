@@ -1,12 +1,17 @@
 [project]
 name = "llm-evaluator"
 version = "0.1.0"
-description = "Add your description here"
+description = "LLM evaluation toolkit using OpenRouter API for model comparison and benchmarking"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "ipykernel>=6.30.1",
     "jupyter>=1.1.1",
+    "pandas>=2.2.0",
+    "requests>=2.31.0",
+    "beautifulsoup4>=4.12.0",
+    "playwright>=1.40.0",
+    "openai>=1.0.0",
 ]
 
 [tool.ruff]

@@ -17,20 +17,69 @@ A Python project for evaluating Large Language Models (LLMs) using the uv packag
 
 ## Setup
 
-1. Clone the repository:
+### 1. Clone the Repository
 
-   ```bash
-   git clone <repository-url>
-   cd llm-evaluator
-   ```
+```bash
+git clone <repository-url>
+cd llm-evaluator
+```
 
-1. Install dependencies using uv:
+### 2. Install Dependencies
 
-   ```bash
-   uv sync
-   ```
+```bash
+uv sync
+```
 
-   This will create a virtual environment and install all required packages including Jupyter.
+This will create a virtual environment and install all required packages:
+
+- Jupyter for interactive notebooks
+- pandas for data manipulation
+- requests for API calls
+- beautifulsoup4 for web scraping
+- playwright for browser automation
+- openai for OpenRouter API client
+
+### 3. Install Playwright Browsers (One-Time Setup)
+
+The notebook uses Playwright to scrape the OpenRouter rankings page. Install the required browser:
+
+```bash
+uv run playwright install chromium
+```
+
+### 4. Get Your OpenRouter API Key
+
+1. Sign up for a free account at [OpenRouter](https://openrouter.ai/)
+2. Generate an API key from your dashboard
+3. Set it as an environment variable:
+
+**Windows (PowerShell):**
+
+```powershell
+$env:OPENROUTER_API_KEY="your-api-key-here"
+```
+
+**Mac/Linux (Bash/Zsh):**
+
+```bash
+export OPENROUTER_API_KEY="your-api-key-here"
+```
+
+**Alternative: Create a `.env` file** (for persistent storage):
+
+```bash
+echo "OPENROUTER_API_KEY=your-api-key-here" > .env
+```
+
+### 5. Start Using the Notebook
+
+Open the notebook and start evaluating models:
+
+```bash
+uv run jupyter notebook notebooks/llm-compare.ipynb
+```
+
+Or open it directly in VS Code with the Jupyter extension.
 
 ## Project Structure
 
@@ -49,17 +98,40 @@ llm-evaluator/
 
 ## Usage
 
-### Using Jupyter Notebooks
+### Running the LLM Comparison Notebook
 
-1. Start Jupyter:
+The main notebook (`notebooks/llm-compare.ipynb`) performs a comprehensive evaluation of language models:
+
+1. **Start Jupyter:**
 
    ```bash
    uv run jupyter notebook
    ```
 
-1. Navigate to the `notebooks/` directory and open any `.ipynb` file.
+   Then navigate to `notebooks/` and open `llm-compare.ipynb`
 
-Alternatively, open notebooks directly in VS Code with the Jupyter extension.
+2. **Or open directly in VS Code:**
+
+   - Install the Jupyter extension for VS Code
+   - Open `notebooks/llm-compare.ipynb`
+   - Click "Select Kernel" → "Python Environments" → Choose the uv environment
+
+### What the Notebook Does
+
+1. **Fetches Top Models** - Scrapes current rankings from OpenRouter
+2. **Generates Questions** - Each model creates a challenging reasoning question
+3. **Answers Questions** - Each model answers all questions
+4. **Evaluates Responses** - Each model rates all answers on a 10-point scale
+5. **Produces Results** - Generates comparison metrics and rating matrices
+
+### Customization
+
+You can modify the notebook to:
+
+- Change the number of models evaluated (default: top 5)
+- Use different sorting criteria (`popularity`, `price_low`, `price_high`, `context_length`, `newest`)
+- Adjust evaluation prompts and rating criteria
+- Export results to different formats
 
 ## Code Quality
 
@@ -164,67 +236,81 @@ This evaluation compares the top 5 models from OpenRouter by having each model:
 4. **Claude Sonnet 4** - anthropic/claude-sonnet-4
 5. **Gemini 2.5 Flash** - google/gemini-2.5-flash
 
-#### Generated Questions
+## Generated Questions
 
-##### 1. Grok Code Fast 1
+### 1. Grok Code Fast 1
 
-**Question:** In a hypothetical society, all inhabitants are either Knights who always tell the truth or Knaves who always lie. You encounter three people: A, B, and C. A says, "We are all Knaves." B says, "Exactly one of us is a Knight." C says, "B and I are different types." Determine the type of each person (Knight or Knave) and provide a step-by-step explanation of your reasoning.
+**Question:** In a tournament where three players—A, B, and C—each compete in a series of one-on-one matches with the following outcomes: A beats B twice, B beats C twice, and A and C tie twice. Unknown is the result of A's match against C. Using only this information, determine the most likely ranking of the players from strongest to weakest, justifying your reasoning step by step. If ties are unavoidable, explain the constraints.
 
-**Generation Time:** 5.6s
+**Generation Time:** 10.31s
 
-##### 2. Claude Sonnet 4.5
+### 2. Claude Sonnet 4.5
 
-**Question:** A rectangular swimming pool is being filled by two pipes. Pipe A fills at a constant rate, while Pipe B's flow rate decreases by 10% each hour. When both pipes run together from the start, the pool fills in exactly 6 hours. When only Pipe A runs, it takes 10 hours to fill the pool. If the pool is empty and you run only Pipe B for 3 hours, then turn it off and finish filling the pool with only Pipe A, how long will the entire process take?
+**Question:** A rectangular swimming pool is being filled by two pipes. Pipe A can fill the pool in 6 hours, and Pipe B can fill it in 4 hours. The pool also has a drain that can empty the full pool in 12 hours.
 
-**Generation Time:** 5.26s
+At 8:00 AM, Pipe A is opened. At 9:00 AM, Pipe B is also opened. At 10:00 AM, someone accidentally opens the drain, which remains open.
 
-##### 3. Gemini 2.5 Flash
+However, there's a complication: the pool has a capacity marker at the 75% level. Once the water reaches this marker, a float valve automatically reduces Pipe B's flow rate to half its original rate (Pipe A and the drain are unaffected).
 
-**Question:** You are presented with a series of nested, opaque containers. Container A contains either Container B or Container C, but not both. Container B contains either a red marble or a blue marble, and also either Container D or Container E. If you are told that you have successfully identified a red marble, and you know definitively that you did *not* open Container C, what is the *single most probable sequence of containers* you opened?
+**Questions:**
 
-**Generation Time:** 1.63s
+1. At what time does the water level reach the 75% marker?
+2. At what time is the pool completely full?
+3. If the pool's total capacity is 2,400 gallons, how many gallons did Pipe B contribute in total?
 
-##### 4. Grok 4 Fast (free)
+Show your reasoning for each step, including how you account for the changing rates at different time periods and the flow rate reduction.
 
-**Question:** Suppose you have a rectangular garden that measures 12 meters by 8 meters, and you want to divide it into smaller square plots of equal size, using as few plots as possible without leaving any unused land. What is the side length of each square plot, and how many such plots are there? If the garden were instead 12 meters by 9 meters, explain how the number of plots would change and why.
+**Generation Time:** 14.74s
 
-**Generation Time:** 9.74s
+### 3. Gemini 2.5 Flash
 
-##### 5. Claude Sonnet 4
+**Question:** A renowned fictional detective, known for solving crimes based on subtle linguistic patterns, is presented with two encrypted messages. Message A, when decrypted, reads: "The quick brown fox jumps over the lazy dog." Message B, when decrypted, reads: "Sphinx of black quartz, judge my vow." The detective is informed that one message was generated by a human, and the other by a sophisticated AI designed to emulate human writing. Without knowing which is which, the detective correctly identifies the AI-generated message.
 
-**Question:** A rectangular garden has a perimeter of 100 meters. Inside this garden, there are two circular flower beds that do not overlap, each with a radius of 8 meters. If you want to place a square gazebo somewhere in the remaining space such that it doesn't overlap with either flower bed, what is the maximum possible side length of this square gazebo?
+Based *only* on the decrypted content, and assuming both messages are valid English sentences, what is the *most plausible* linguistic pattern the detective likely used to distinguish the AI-generated message, and why? Justify your reasoning by comparing linguistic features present or absent in each message as they relate to typical human vs. AI text generation.
 
-**Generation Time:** 3.54s
+**Generation Time:** 1.93s
 
-#### Model Performance Summary
+### 4. Claude Sonnet 4
 
-##### Overall Average Ratings (10-point scale)
+**Question:** A pharmaceutical company discovers that their new drug increases patient recovery rates by 40% in clinical trials, but the trials excluded patients over 65, those with kidney disease, and those taking blood thinners—groups that together represent 60% of the target patient population. The company's marketing team wants to advertise "40% faster recovery" while the medical team argues this is misleading. Meanwhile, a competitor's drug shows only 25% improvement but was tested on the full patient population including all excluded groups.
 
-1. 🥇 **Grok 4 Fast (free)**: 8.67/10
-2. 🥈 **Grok Code Fast 1**: 7.21/10
-3. 🥉 **Claude Sonnet 4.5**: 6.92/10
-4. **Claude Sonnet 4**: 6.40/10
-5. **Gemini 2.5 Flash**: 6.38/10
+Analyze the ethical, statistical, and business implications of this scenario. What factors should guide the company's decision about how to market their drug, and how should healthcare providers and patients interpret and compare these competing claims? Consider both the immediate consequences and long-term effects on medical research practices, patient trust, and public health outcomes.
 
-#### Cross-Model Rating Matrix
+**Generation Time:** 6.43s
 
-This matrix shows how each model (columns) rated each model's answers (rows):
+### 5. Grok 4 Fast (free)
 
-| Answer Model | Claude Sonnet 4 | Claude Sonnet 4.5 | Gemini 2.5 Flash | Grok 4 Fast | Grok Code Fast 1 |
-|--------------|-----------------|-------------------|------------------|-------------|------------------|
-| **Claude Sonnet 4** | 6.40 | 6.60 | 6.80 | 5.60 | 6.60 |
-| **Claude Sonnet 4.5** | 7.00 | 6.80 | 8.00 | 6.40 | 6.40 |
-| **Gemini 2.5 Flash** | 6.60 | 6.75 | 7.20 | 5.40 | 6.00 |
-| **Grok 4 Fast (free)** | 8.67 | 7.67 | 9.33 | 8.00 | 9.67 |
-| **Grok Code Fast 1** | 6.80 | 6.00 | 6.60 | 8.40 | 8.00 |
+**Question:** Consider a remote village where villagers are either Truth-tellers (always honest), Liars (always dishonest), or Alternators (who alternate between truth and lies in consecutive statements, starting with truth). You encounter three villagers, X, Y, and Z, each making two statements in order:
 
-#### Key Findings
+- X says: "Y is a Liar" then "Z is an Alternator."
+- Y says: "Z is a Truth-teller" then "X is a Liar."
+- Z says: "X is an Alternator" then "Y is a Truth-teller."
 
-- **Grok 4 Fast (free)** achieved the highest overall rating (8.67/10), consistently receiving strong scores across all raters
-- **Grok Code Fast 1** came in second (7.21/10), showing particularly strong performance when rated by Grok 4 Fast (9.67/10)
-- The Claude models and Gemini 2.5 Flash performed similarly, with scores between 6.38-6.92
-- There is notable variance in how different models rate the same answers, suggesting subjective differences in evaluation criteria
-- Generation times varied from 1.63s (Gemini 2.5 Flash) to 9.74s (Grok 4 Fast)
+You also know that exactly one is an Alternator, and no two are the same type. Determine the type of each villager, showing your step-by-step reasoning by considering possible cases for the Alternator and checking consistency with the statements and constraints.
+
+**Generation Time:** 15.03s
+
+## Model Performance Summary
+
+### Overall Average Ratings (10-point scale)
+
+1. **Claude Sonnet 4.5**: 7.58/10
+2. **Grok 4 Fast (free)**: 7.44/10
+3. **Claude Sonnet 4**: 7.38/10
+4. **Grok Code Fast 1**: 6.96/10
+5. **Gemini 2.5 Flash**: 6.67/10
+
+### Cross-Model Rating Matrix
+
+This shows how each model (rater/columns) rated each model's answers (answerer/rows):
+
+rater_model_name    Claude Sonnet 4  Claude Sonnet 4.5  Gemini 2.5 Flash  Grok 4 Fast (free)  Grok Code Fast 1
+answer_model_name
+Claude Sonnet 4                 6.6                6.5               8.4                 6.6               8.6
+Claude Sonnet 4.5               7.4                7.0               8.4                 6.4               8.6
+Gemini 2.5 Flash                6.8                6.5               8.0                 5.4               6.6
+Grok 4 Fast (free)              7.2                6.8               9.4                 7.0               6.8
+Grok Code Fast 1                6.0                6.5               7.2                 6.8               8.2
 
 For detailed results and methodology, see the [llm-compare notebook](notebooks/llm-compare.ipynb).
 
