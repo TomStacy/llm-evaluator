@@ -12,3 +12,4 @@ This is a Python project for LLM evaluation using uv package manager. The projec
 - Use uv for all dependency management
 - Keep notebooks in a dedicated directory
 - Follow PEP 8 style guidelines for Python code
+- Document code with clear comments and docstrings

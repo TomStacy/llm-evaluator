@@ -2,6 +2,12 @@
 
 A Python project for evaluating Large Language Models (LLMs) using the uv package manager.
 
+## Credits
+
+[Ed Donner](https://www.udemy.com/user/ed-donner-3/) Udemy Profile
+
+This project is based on an example from Ed Donner in his "Master AI Agents in 30 days: build 8 real-world projects with OpenAI Agents SDK, CrewAI, LangGraph, AutoGen and MCP." course. The orignal code has been modified to use OpenRouter to pull the top 5 most popular LLM's based on OpenRouter Rankings.
+
 ## Features
 
 - Python scripts for LLM evaluation
@@ -228,89 +234,148 @@ This evaluation compares the top 5 models from OpenRouter by having each model:
 2. Answer all questions from other models
 3. Rate the quality of all answers on a 10-point scale
 
-#### Tested Models
+#### Tested Models (10/28/2025)
 
-1. **Grok 4 Fast (free)** - x-ai/grok-4-fast
-2. **Grok Code Fast 1** - x-ai/grok-code-fast-1
-3. **Claude Sonnet 4.5** - anthropic/claude-sonnet-4.5
-4. **Claude Sonnet 4** - anthropic/claude-sonnet-4
-5. **Gemini 2.5 Flash** - google/gemini-2.5-flash
+| Model | Score |
+|-------|-------|
+| Grok Code Fast 1 | 1.35T tokens (16% change) |
+| Claude Sonnet 4.5 | 569.0B tokens (5% change) |
+| Gemini 2.5 Flash | 298.0B tokens (0% change) |
+| Gemini 2.5 Pro | 184.0B tokens (18% change) |
+| Grok 4 Fast | 160.0B tokens (15% change) |
 
 ## Generated Questions
 
 ### 1. Grok Code Fast 1
 
-**Question:** In a tournament where three players—A, B, and C—each compete in a series of one-on-one matches with the following outcomes: A beats B twice, B beats C twice, and A and C tie twice. Unknown is the result of A's match against C. Using only this information, determine the most likely ranking of the players from strongest to weakest, justifying your reasoning step by step. If ties are unavoidable, explain the constraints.
+**Question:** A hiker is lost in the woods and knows that a town lies precisely due east. She has a faulty compass that points north only 80% of the time, but otherwise points randomly in any direction. She can take only one step before rechecking the compass. Assuming the woods are uniform and she has no other tools, describe a strategy for her to maximize the probability of heading towards the town, including the reasoning for why this approach is optimal, any assumptions made, and how partial failures are mitigated. Explain step-by-step.
 
-**Generation Time:** 10.31s
+**Generation Time:** 9.51s
 
 ### 2. Claude Sonnet 4.5
 
-**Question:** A rectangular swimming pool is being filled by two pipes. Pipe A can fill the pool in 6 hours, and Pipe B can fill it in 4 hours. The pool also has a drain that can empty the full pool in 12 hours.
+**Question:** ## The Lighthouse Problem
 
-At 8:00 AM, Pipe A is opened. At 9:00 AM, Pipe B is also opened. At 10:00 AM, someone accidentally opens the drain, which remains open.
+A lighthouse keeper notices that her lighthouse beam rotates at a constant rate of one complete rotation every 60 seconds. The lighthouse sits on a small island 2 kilometers from a perfectly straight shoreline.
 
-However, there's a complication: the pool has a capacity marker at the 75% level. Once the water reaches this marker, a float valve automatically reduces Pipe B's flow rate to half its original rate (Pipe A and the drain are unaffected).
+**Part A:** At the moment when the beam is perpendicular to the shore, it illuminates a point P on the beach. How fast is this illuminated point P traveling along the shoreline at that exact instant?
 
-**Questions:**
+**Part B:** When the beam makes a 60-degree angle with the perpendicular to the shore, how fast is the illuminated point traveling along the shoreline at that moment?
 
-1. At what time does the water level reach the 75% marker?
-2. At what time is the pool completely full?
-3. If the pool's total capacity is 2,400 gallons, how many gallons did Pipe B contribute in total?
+**Part C:** The keeper decides to install a motion sensor that will trigger whenever the illuminated point on the shore is traveling faster than 1 kilometer per second. What is the total length of shoreline (combining sections on both sides of the perpendicular) where this sensor would need to be installed?
 
-Show your reasoning for each step, including how you account for the changing rates at different time periods and the flow rate reduction.
+**Part D:** A sailor in a boat parallel to the shore argues that if the beam rotates fast enough, the illuminated point could theoretically exceed the speed of light. The keeper dismisses this as impossible. Who is correct and why? If the sailor is correct, at what angle(s) from the perpendicular would the illuminated point first exceed the speed of light if the rotation rate were increased to 10 rotations per second?
 
-**Generation Time:** 14.74s
+Show your reasoning for each part, including the mathematical relationships you use and any assumptions you make.
+
+**Generation Time:** 8.93s
 
 ### 3. Gemini 2.5 Flash
 
-**Question:** A renowned fictional detective, known for solving crimes based on subtle linguistic patterns, is presented with two encrypted messages. Message A, when decrypted, reads: "The quick brown fox jumps over the lazy dog." Message B, when decrypted, reads: "Sphinx of black quartz, judge my vow." The detective is informed that one message was generated by a human, and the other by a sophisticated AI designed to emulate human writing. Without knowing which is which, the detective correctly identifies the AI-generated message.
+**Question:** A cryptographer designs a system where a message, M, is encrypted by applying two operations: first, a bitwise XOR with a 64-bit key, K, then a cyclic left shift by a variable amount, S. Decryption reverses this: a cyclic right shift by S, then a bitwise XOR with K.
 
-Based *only* on the decrypted content, and assuming both messages are valid English sentences, what is the *most plausible* linguistic pattern the detective likely used to distinguish the AI-generated message, and why? Justify your reasoning by comparing linguistic features present or absent in each message as they relate to typical human vs. AI text generation.
+An attacker intercepts two encrypted messages, C1 and C2, and knows they both originated from the same plaintext P, but were encrypted using different (unknown) shift amounts, S1 and S2 (where S1 != S2). The key K is the same for both.
 
-**Generation Time:** 1.93s
+Given only C1, C2, and the knowledge that K contains at least two consecutive '1' bits and at least two consecutive '0' bits, deduce a strategy to recover K without knowing S1, S2, or P. Explain the crucial property of XOR and cyclic shifts that makes this feasible, and outline the steps you would take, acknowledging any potential ambiguities or remaining unknowns about K.
 
-### 4. Claude Sonnet 4
+**Generation Time:** 1.94s
 
-**Question:** A pharmaceutical company discovers that their new drug increases patient recovery rates by 40% in clinical trials, but the trials excluded patients over 65, those with kidney disease, and those taking blood thinners—groups that together represent 60% of the target patient population. The company's marketing team wants to advertise "40% faster recovery" while the medical team argues this is misleading. Meanwhile, a competitor's drug shows only 25% improvement but was tested on the full patient population including all excluded groups.
+### 4. Gemini 2.5 Pro
 
-Analyze the ethical, statistical, and business implications of this scenario. What factors should guide the company's decision about how to market their drug, and how should healthcare providers and patients interpret and compare these competing claims? Consider both the immediate consequences and long-term effects on medical research practices, patient trust, and public health outcomes.
+**Question:** Consider a closed system with three logic-driven Constructs: Alpha, Beta, and Gamma, arranged in a fixed processing loop (Alpha sends to Beta, Beta to Gamma, Gamma to Alpha). You can trigger one Construct per turn. When triggered, a Construct processes the last signal it received and sends a new one.
 
-**Generation Time:** 6.43s
+The system has these rules:
 
-### 5. Grok 4 Fast (free)
+1. **Transformation:**
 
-**Question:** Consider a remote village where villagers are either Truth-tellers (always honest), Liars (always dishonest), or Alternators (who alternate between truth and lies in consecutive statements, starting with truth). You encounter three villagers, X, Y, and Z, each making two statements in order:
+    - If a Construct receives a Pulse, its next signal will be a Wave.
+    - If a Construct receives a Wave, its next signal will be a Chord.
+    - If a Construct receives a Chord, it enters a "Resonant State" and its next signal will replicate the *second-to-last* signal it received. If no second-to-last signal exists, it sends a Pulse.
+2. **Harmonic Interference:** If, at the start of a turn, both Alpha and Gamma hold a Wave as their "next signal to be sent," Beta becomes "desynchronized." A desynchronized Construct cannot be triggered and will not send or receive a signal for that turn. It automatically resynchronizes at the end of the turn.
 
-- X says: "Y is a Liar" then "Z is an Alternator."
-- Y says: "Z is a Truth-teller" then "X is a Liar."
-- Z says: "X is an Alternator" then "Y is a Truth-teller."
+**Initial State (Turn 0):**
 
-You also know that exactly one is an Alternator, and no two are the same type. Determine the type of each villager, showing your step-by-step reasoning by considering possible cases for the Alternator and checking consistency with the statements and constraints.
+- The last signal Alpha received was a Pulse.
+- The last signal Beta received was a Wave.
+- The last signal Gamma received was a Wave.
 
-**Generation Time:** 15.03s
+Your task is to determine the shortest sequence of triggers to make Beta send a Pulse.
+
+For each turn in your sequence, specify:
+a) Which Construct you trigger.
+b) The resulting signal sent by the triggered Construct.
+c) The state of all three Constructs for the next turn (i.e., what is the last signal each has now received?).
+d) A brief justification, explaining how your choice navigates the rules to achieve the goal.
+
+**Generation Time:** 26.36s
+
+### 5. Grok 4 Fast
+
+**Question:** Suppose you are designing a secure messaging app where messages are encrypted using a shared key derived from a sequence of operations on user inputs. The key generation starts with two prime numbers, p=17 and q=23, and a user's passphrase hashed to an integer m=42. The process is: (1) Compute the product n = p * q. (2) Compute Euler's totient φ(n). (3) Select e=5 (coprime to φ(n)). (4) Compute d such that d * e ≡ 1 mod φ(n). Now, to send a message x (where 0 < x < n), compute ciphertext c = x^e mod n using d for decryption. However, to add nuance for security, the app modifies step 4: instead of modular inverse, it uses d = (φ(n) + 1) / e if integer, else falls back to the inverse. For m=42, adjust e to the smallest odd integer greater than 1 coprime to φ(n) if 5 isn't used.
+
+a) Compute n, φ(n), and the adjusted e if needed.  
+b) Compute d using the modified rule.  
+c) If the message x=15, what is c? Verify decryption recovers x.  
+d) Explain why this modification might weaken or strengthen the security, considering RSA principles.
+
+**Generation Time:** 6.92s
 
 ## Model Performance Summary
 
 ### Overall Average Ratings (10-point scale)
 
-1. **Claude Sonnet 4.5**: 7.58/10
-2. **Grok 4 Fast (free)**: 7.44/10
-3. **Claude Sonnet 4**: 7.38/10
-4. **Grok Code Fast 1**: 6.96/10
-5. **Gemini 2.5 Flash**: 6.67/10
+1. **Gemini 2.5 Pro**: 9.60/10
+2. **Grok 4 Fast**: 9.12/10
+3. **Claude Sonnet 4.5**: 8.04/10
+4. **Gemini 2.5 Flash**: 7.92/10
+5. **Grok Code Fast 1**: 7.56/10
 
 ### Cross-Model Rating Matrix
 
 This shows how each model (rater/columns) rated each model's answers (answerer/rows):
 
-rater_model_name    Claude Sonnet 4  Claude Sonnet 4.5  Gemini 2.5 Flash  Grok 4 Fast (free)  Grok Code Fast 1
-answer_model_name
-Claude Sonnet 4                 6.6                6.5               8.4                 6.6               8.6
-Claude Sonnet 4.5               7.4                7.0               8.4                 6.4               8.6
-Gemini 2.5 Flash                6.8                6.5               8.0                 5.4               6.6
-Grok 4 Fast (free)              7.2                6.8               9.4                 7.0               6.8
-Grok Code Fast 1                6.0                6.5               7.2                 6.8               8.2
+| Model | Claude Sonnet 4.5 | Gemini 2.5 Flash | Gemini 2.5 Pro | Grok 4 Fast | Grok Code Fast 1 |
+| --- | --- | --- | --- | --- | --- |
+| Claude Sonnet 4.5 | 6.40 | 7.80 | 10.00 | 7.80 | 8.20 |
+| Gemini 2.5 Flash | 6.40 | 9.40 | 8.00 | 7.20 | 8.60 |
+| Gemini 2.5 Pro | 8.20 | 10.00 | 10.00 | 9.80 | 10.00 |
+| Grok 4 Fast | 6.40 | 9.40 | 10.00 | 9.80 | 10.00 |
+| Grok Code Fast 1 | 7.00 | 8.60 | 6.40 | 7.40 | 8.40 |
+
+## Rating Statistics Summary
+
+### 📊 Overall Rating Distribution
+
+- **Total ratings collected**: 125
+- **Average rating**: 8.45 / 10
+- **Median rating**: 10.0 / 10
+- **Standard deviation**: 2.50
+- **Range**: 1 - 10
+
+### 📈 Rating Frequency
+
+- **10/10**: `███████████` (71 ratings, 56.8%)
+- **9/10**: `█` (12 ratings, 9.6%)
+- **8/10**: `██` (13 ratings, 10.4%)
+- **7/10**: `█` (12 ratings, 9.6%)
+- **6/10**: `` (3 ratings, 2.4%)
+- **5/10**: `` (1 ratings, 0.8%)
+- **4/10**: `` (2 ratings, 1.6%)
+- **3/10**: `` (3 ratings, 2.4%)
+- **2/10**: `` (2 ratings, 1.6%)
+- **1/10**: `` (6 ratings, 4.8%)
+
+### 🤔 Self-Rating vs. Peer-Rating
+
+- **Average when rating own answers**: 8.80
+- **Average when rating others' answers**: 8.36
+- **Bias Analysis**: Models are fairly unbiased (difference: +0.44)
+
+### 🎭 Rater Characteristics
+
+- **🎁 Most Generous Rater**: Gemini 2.5 Flash (avg: 9.04)
+- **🔍 Strictest Rater**: Claude Sonnet 4.5 (avg: 6.88)
+- **📏 Rater Spread**: 2.16 points
 
 For detailed results and methodology, see the [llm-compare notebook](notebooks/llm-compare.ipynb).
 
