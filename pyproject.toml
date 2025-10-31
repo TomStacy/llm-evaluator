@@ -59,3 +59,8 @@ indent-style = "space"
 
 # Use `\n` line endings for all files
 line-ending = "auto"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.14.2",
+]
